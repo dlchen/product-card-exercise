@@ -12,6 +12,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test-api": "jest api --watch",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -22,5 +23,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "supertest": "^4.0.2"
+  }
 }
