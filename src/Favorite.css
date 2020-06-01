@@ -1,0 +1,13 @@
+.icon {
+  text-align: right;
+  margin-right: 3px;
+  cursor: pointer;
+}
+
+.favorite {
+  color: red;
+}
+
+.not-favorite {
+  color: darkgray;
+}

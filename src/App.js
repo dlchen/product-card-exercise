@@ -30,13 +30,20 @@ const App = () => {
     fetchAndSet('/products/favorites', setFavorites, (arr) => new Set(arr));
   }, []);
 
+  const addToFavorites = (product) => (event) => {
+    setFavorites(new Set([...favorites, product.variantId]));
+  };
+
   return (
     <div className="app">
       <div className="App-row">
         <Filters />
       </div>
       <div className="App-row">
-        <Products products={products} favorites={favorites} />
+        <Products
+          products={products}
+          favorites={favorites}
+          addToFavorites={addToFavorites} />
       </div>
     </div>
   )
