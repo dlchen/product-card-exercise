@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/runtime": "^7.10.2",
     "express": "^4.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -10,6 +11,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-api": "node api/server",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test-api": "jest api --watch",
@@ -26,5 +28,6 @@
   ],
   "devDependencies": {
     "supertest": "^4.0.2"
-  }
+  },
+  "proxy": "http://localhost:9001/"
 }
