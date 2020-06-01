@@ -2,10 +2,22 @@ import React from 'react';
 import Product from './Product';
 import './Products.css';
 
-const Products = ({ products }) => {
+const productTransform = (favorites) => {
+
+  return (product) => {
+    return (
+      <Product
+        key={product.variantId}
+        product={product}
+        isFavorite={favorites.has(product.variantId)} />
+    );
+  }
+}
+
+const Products = ({ products, favorites }) => {
   return (
     <div className="Products-grid">
-      {products.map(product => <Product key={product.variantId} product={product} />)}
+      {products.map(productTransform(favorites))}
     </div>
   );
 };
