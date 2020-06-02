@@ -7,10 +7,12 @@ const Favorite = ({ product, isFavorite, addToFavorites }) => {
   const ariaLabel = isFavorite ? 'filled heart' : 'empty heart';
   const heartIcon = isFavorite ? '♥' : '♡';
 
+  const handleClick = () => addToFavorites(product);
+
   return (
     <div
       className={favoriteClass}
-      onClick={addToFavorites(product)}
+      onClick={handleClick}
       role="img"
       aria-label={ariaLabel}>
       {heartIcon}

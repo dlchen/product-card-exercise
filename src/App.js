@@ -4,21 +4,46 @@ import Products from './Products';
 import Filters from './Filters';
 
 /**
- * Fetches resource and sets to state (optional transform)
- * @param {string} url - url to fetch
- * @param {function} setter - setter function from useState
- * @param {function} transform - (optional) transform before setting
+ * Fetches resource and converts response to json
+ * @param url - url passed to fetch api
+ * @param {object} options - options passed to fetch api
  */
-const fetchAndSet = async (url, setter, transform = (x) => x) => {
+const fetchJson = async (url, options) => {
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, options);
     const json = await response.json();
-    setter(transform(json));
+    return json;
   }
   catch (error) {
     console.error(`Error fetching ${url}`, error);
   };
 }
+
+/**
+ * Hydrates state from API
+ * @param {function} setProducts - useState setter for products
+ * @param {function} setFavorites - useState setter for favorites
+ */
+const hydrateState = async (setProducts, setFavorites) => {
+  const [products, favorites] = await Promise.all([fetchJson('/products'), fetchJson('/products/favorites')])
+  setProducts(products);
+  setFavorites(new Set(favorites));
+}
+
+/**
+ * Handles async addToFavorites, consumed by Favorite onClick
+ */
+const addToFavorites = (setFavorites) => (product) => {
+
+  (async () => {
+    const favorites = await fetchJson('/products/favorites', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ variantId: product.variantId })
+    });
+    setFavorites(new Set(favorites));
+  })();
+};
 
 const App = () => {
 
@@ -26,13 +51,8 @@ const App = () => {
   const [favorites, setFavorites] = useState(new Set());
 
   useEffect(() => {
-    fetchAndSet('/products', setProducts);
-    fetchAndSet('/products/favorites', setFavorites, (arr) => new Set(arr));
+    hydrateState(setProducts, setFavorites);
   }, []);
-
-  const addToFavorites = (product) => (event) => {
-    setFavorites(new Set([...favorites, product.variantId]));
-  };
 
   return (
     <div className="app">
@@ -43,7 +63,7 @@ const App = () => {
         <Products
           products={products}
           favorites={favorites}
-          addToFavorites={addToFavorites} />
+          addToFavorites={addToFavorites(setFavorites)} />
       </div>
     </div>
   )
