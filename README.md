@@ -1,6 +1,26 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Running
+# Product Cards App
+
+## Overview
+
+Current functionality is limited. The app displays products tiles served from the server. A user can click on the heart icon on the top-right to add a product to their favorites. The list of favorites is persisted on the server.
+
+## Limitations aka Things To Do
+
+On the backend side, product data is all mocked via json. The data store for favorites is just a javascript array. There is no concept of separate users, nor any authentication. Request parameters are not validated, there is no error handling, and no logging. Documentation is needed for each of the REST APIs. Testing needs to be improved. Nodemon could be added for hot reload.
+
+On the frontend side, a user should also be able to remove a product from their favorites. If the app continues to grow, we should consider finding a state management solution and a CSS framework. Tests need to be added. May need to organize the folder structure as we build out more components.
+
+Tests and code coverage should be run on all Pull Requests.
+
+Tasks for all above tasks should be created.
+
+## Getting Started
+
+First start the server, then start the client. See instructions below.
+
+## Start Server
 
 We added a separate express API to serve products to the client app.  To run that prior to kicking
 off the webpack dev server running the react app:
@@ -8,12 +28,13 @@ off the webpack dev server running the react app:
 ```sh
 # Run on a later version of node
 # Runs on PORT 9001 by default, but can set the PORT env variable to run on a different port
-$ node api/server.js
+$ npm run start-api
+
+# Run tests
+$ npm run test-api
 ```
 
-Then, move on to running the client below...
-
-## Available Scripts
+## Start Client
 
 In the project directory, you can run:
 
@@ -29,6 +50,8 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+## Other Available Scripts
 
 ### `npm run build`
 
