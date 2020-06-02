@@ -6,29 +6,27 @@ const app = express();
 app.use(express.json());
 
 app.get('/products', (req, res) => {
-  return res.json(products.slice(0, 60));
+  return res.json(products);
 });
 
-const mockFavorites = [
-  ...products.slice(0, 5).map((product) => product.variantId),
-  ...products.slice(10, 15).map((product) => product.variantId)
-];
+// TODO: use data store to allow for multiple users
+const favoritesData = [];
 
-const addToFavorites = (productId) => {
-  mockFavorites.push(productId);
+const addToFavorites = (variantId) => {
+  favoritesData.push(variantId);
 }
 
 app.route('/products/favorites')
   .get((req, res) => {
-    return res.json(mockFavorites);
+    return res.json(favoritesData);
   })
   .post((req, res) => {
 
     // TODO: handle request validation
     // TODO: handle errors
 
-    addToFavorites(req.body.productId);
-    return res.json(mockFavorites);
+    addToFavorites(req.body.variantId);
+    return res.json(favoritesData);
   });
 
 module.exports = app;
