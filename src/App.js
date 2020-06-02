@@ -25,25 +25,13 @@ const fetchJson = async (url, options) => {
  * @param {function} setFavorites - useState setter for favorites
  */
 const hydrateState = async (setProducts, setFavorites) => {
-  const [products, favorites] = await Promise.all([fetchJson('/products'), fetchJson('/products/favorites')])
+  const [products, favorites] = await Promise.all([
+    fetchJson('/products'),
+    fetchJson('/products/favorites')
+  ]);
   setProducts(products);
   setFavorites(new Set(favorites));
 }
-
-/**
- * Handles async addToFavorites, consumed by Favorite onClick
- */
-const addToFavorites = (setFavorites) => (product) => {
-
-  (async () => {
-    const favorites = await fetchJson('/products/favorites', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ variantId: product.variantId })
-    });
-    setFavorites(new Set(favorites));
-  })();
-};
 
 const App = () => {
 
@@ -54,6 +42,19 @@ const App = () => {
     hydrateState(setProducts, setFavorites);
   }, []);
 
+  /**
+   * Handles async addToFavorites, consumed by Favorite onClick
+   */
+  const addToFavorites = async (product) => {
+
+    const favorites = await fetchJson('/products/favorites', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ variantId: product.variantId })
+    });
+    setFavorites(new Set(favorites));
+  };
+
   return (
     <div className="app">
       <div className="App-row">
@@ -63,7 +64,7 @@ const App = () => {
         <Products
           products={products}
           favorites={favorites}
-          addToFavorites={addToFavorites(setFavorites)} />
+          addToFavorites={addToFavorites} />
       </div>
     </div>
   )
